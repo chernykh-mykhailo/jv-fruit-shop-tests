@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import core.basesyntax.db.Storage;
 import core.basesyntax.service.ReportGenerator;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,10 +20,6 @@ class ReportGeneratorImplTest {
         reportGenerator = new ReportGeneratorImpl();
         Storage.setFruitQuantity("apple", 30);
         Storage.setFruitQuantity("banana", 50);
-    }
-
-    @AfterEach
-    void tearDown() {
     }
 
     @Test

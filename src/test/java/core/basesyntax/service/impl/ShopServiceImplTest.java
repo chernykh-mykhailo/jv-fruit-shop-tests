@@ -24,19 +24,14 @@ class ShopServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        // 1. Створюємо справжню мапу обробників
         Map<FruitTransaction.Operation, OperationHandler> handlers = new HashMap<>();
         handlers.put(FruitTransaction.Operation.BALANCE, new BalanceOperation());
         handlers.put(FruitTransaction.Operation.SUPPLY, new SupplyOperation());
-        // ... додайте всі інші обробники ...
 
-        // 2. Створюємо справжню стратегію
         OperationStrategy operationStrategy = new OperationStrategyImpl(handlers);
 
-        // 3. Створюємо справжній сервіс
         shopService = new ShopServiceImpl(operationStrategy);
 
-        // Оскільки ми не можемо очистити сховище, ми встановлюємо початкове значення 0
         Storage.setFruitQuantity(APPLE, 0);
     }
 

@@ -18,15 +18,22 @@ class DataConverterImplTest {
     }
 
     @Test
-    void convertToTransaction_ValidData_ReturnsCorrectTransactions() {
+    void convertToTransaction_ValidData_ReturnsCorrectList() {
         List<String> input = List.of(
                 "type,fruit,quantity",
                 "b,banana,20",
                 "p,apple,10"
         );
-        List<FruitTransaction> transactions = dataConverter.convertToTransaction(input);
-        assertEquals(2, transactions.size());
-        assertEquals(FruitTransaction.Operation.BALANCE, transactions.get(0).getOperation());
+
+        List<FruitTransaction> expected = List.of(
+                new FruitTransaction(FruitTransaction.Operation.BALANCE, "banana", 20),
+                new FruitTransaction(FruitTransaction.Operation.PURCHASE, "apple", 10)
+        );
+
+        List<FruitTransaction> actual = dataConverter.convertToTransaction(input);
+
+        assertEquals(expected, actual,
+                "The list of the transaction should match expected");
     }
 
     @Test
@@ -35,7 +42,17 @@ class DataConverterImplTest {
                 "invalid,header",
                 "b,banana,20"
         );
-        assertThrows(RuntimeException.class, () -> dataConverter.convertToTransaction(input));
+
+        RuntimeException thrown = assertThrows(
+                RuntimeException.class,
+                () -> dataConverter.convertToTransaction(input),
+                "A RuntimeException should be thrown for an invalid header."
+        );
+
+        String expectedMessage = "Incorrect file header format.";
+        String actualMessage = thrown.getMessage();
+        assertEquals(expectedMessage, actualMessage,
+                "The exception message should exactly indicate the header format error.");
     }
 
     @Test
